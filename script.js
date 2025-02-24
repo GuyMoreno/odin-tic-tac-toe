@@ -53,3 +53,5 @@ const checkWinner = (gameBoard) => {
   }
   return false;
 };
+
+let currentPlayer = "X ";
