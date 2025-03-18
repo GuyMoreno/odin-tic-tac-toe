@@ -7,6 +7,7 @@
 body {
   font-family: "Arial", sans-serif;
   font-weight: bold;
+
   background-color: #f9f9f9;
   height: 100vh;
   color: #333;
@@ -21,4 +22,39 @@ h1 {
 h1::before,
 h1::after {
   content: " 🔥 ";
+}
+
+.container {
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  margin-top: 20px;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 5px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f1;
+  font-size: 36px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
