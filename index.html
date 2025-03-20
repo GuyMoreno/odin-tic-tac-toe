@@ -8,51 +8,17 @@
   </head>
   <body>
     <h1>Tic-Tac-Toe Game</h1>
-    <div class="container">
-      <div class="gameboard">
-        <div class="cell" id="0"></div>
-        <div class="cell" id="1"></div>
-        <div class="cell" id="2"></div>
-        <div class="cell" id="3"></div>
-        <div class="cell" id="4"></div>
-        <div class="cell" id="5"></div>
-        <div class="cell" id="6"></div>
-        <div class="cell" id="7"></div>
-        <div class="cell" id="8"></div>
+    <div id="game-board"></div>
+    <button id="startGameBtn">Start Game</button>
+    <div class="text-container">
+      <div id="name-inputs" style="display: none">
+        <label>Player 1 Name: <input type="text" id="player1-name" /></label>
+        <label>Player 2 Name: <input type="text" id="player2-name" /></label>
+        <button id="submit-names">Submit Names</button>
       </div>
-      <div>
-        <div id="name-inputs">
-          <label for="player1-name">Player 1 Name:</label>
-          <input
-            type="text"
-            id="player1-name"
-            placeholder="Enter Player 1's name"
-          />
-
-          <label for="player2-name">Player 2 Name:</label>
-          <input
-            type="text"
-            id="player2-name"
-            placeholder="Enter Player 2's name"
-          />
-
-          <button id="start-game-btn">Start Game</button>
-        </div>
-
-        <p id="turn-display"></p>
-
-        <div class="scoreDisplays">
-          <div class="scoreDisplay">
-            Player 1 Score: <span id="playerScoreDisplay">0</span>
-          </div>
-          <div class="scoreDisplay">
-            Player 2 Score: <span id="computerScoreDisplay">0</span>
-          </div>
-        </div>
-
-        <button id="reset-btn">Restart Game</button>
-      </div>
+      <div id="resultDisplay">Result:</div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
