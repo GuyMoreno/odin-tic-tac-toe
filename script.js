@@ -11,7 +11,7 @@ const Gameboard = (() => {
       gameboard[index] = marker;
       return true;
     }
-    console.log("Can't place a marker here"); // TEST - remove later
+    // console.log("Can't place a marker here"); // TEST - remove later
     return false;
   };
 
@@ -88,6 +88,9 @@ const GameController = (() => {
       // Check if all three cells have the same marker and are not empty
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         console.log(`${currentPlayer.name} wins!`);
+        alert(`${currentPlayer.name} wins!`);
+        displayController.freezeCells();
+        displayController.setGameOver(true);
         return true;
       }
     }
@@ -101,57 +104,81 @@ const GameController = (() => {
     return false;
   };
 
-  return { startGame, placeMarker };
+  return { startGame, placeMarker, checkWinner };
 })();
-
-// TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS
-
-// const player1 = Player("Guy", "X");
-// const player2 = Player("Taz", "O");
-
-// GameController.startGame(player1, player2);
-
-// // בודקים את המצב ההתחלתי של הלוח
-// console.log(Gameboard.getBoard()); // מצפה ללוח ריק
-
-// GameController.placeMarker(0); // Guy
-// console.log(Gameboard.getBoard()); // מצפה ל-X במקום 0
-
-// GameController.placeMarker(1); // Taz
-// console.log(Gameboard.getBoard()); // מצפה ל-O במקום 1
-
-// GameController.placeMarker(2); // Guy
-// GameController.placeMarker(4); // Taz
-// GameController.placeMarker(3); // Guy
-// GameController.placeMarker(5); // Taz
-// GameController.placeMarker(6); // Guy - אמור לנצח!
-// console.log(Gameboard.getBoard());
-
-// TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS TESTS
 
 // handle the display/DOM logic.
 // Write a function that will render the contents of the gameboard array to the webpage.
-// const displayController = (() => {
-//   const resultDisplay = document.getElementById("resultDisplay");
-//   const startGameBtn = document.getElementById("startGameBtn");
-//   function renderBoard() {
-//     const container = document.createElement("div");
-//     container.classList.add("container");
+const displayController = (() => {
+  const startGameBtn = document.getElementById("start-button");
+  const resetButton = document.getElementById("reset-button");
+  const startScreen = document.getElementById("start-screen");
+  const gameScreen = document.getElementById("game-screen");
 
-//     const gameboard = document.createElement("div");
-//     gameboard.classList.add("gameboard");
+  let gameOver = false;
 
-//     for (let i = 0; i < 9; i++) {
-//       const cell = document.createElement("div");
-//       cell.classList.add("cell");
-//       cell.id = i;
-//       cell.addEventListener("click", handleCellClick);
-//       gameboard.appendChild(cell);
-//     }
+  startGameBtn.addEventListener("click", startGame);
 
-//     container.appendChild(gameboard);
-//     document.body.appendChild(container);
-//   }
+  function setGameOver(status) {
+    gameOver = status;
+  }
 
-//   return { resultDisplay, renderBoard };
-// })();
+  function startGame() {
+    const player1Name = document.getElementById("player1-name").value;
+    const player2Name = document.getElementById("player2-name").value;
+
+    if (!player1Name || !player2Name) {
+      alert("Please enter names for both players!");
+      return;
+    }
+
+    const player1 = Player(player1Name, "X");
+    const player2 = Player(player2Name, "O");
+
+    GameController.startGame(player1, player2);
+
+    startScreen.style.display = "none";
+    gameScreen.style.display = "block";
+
+    gameOver = false;
+    renderBoard();
+  }
+
+  function renderBoard() {
+    const board = Gameboard.getBoard();
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach((cell, index) => {
+      cell.textContent = board[index];
+      cell.removeEventListener("click", handleCellClick);
+      if (!gameOver) {
+        cell.addEventListener("click", () => handleCellClick(index));
+      }
+    });
+  }
+
+  function handleCellClick(index) {
+    if (gameOver) return;
+
+    GameController.placeMarker(index);
+    renderBoard();
+  }
+
+  resetButton.addEventListener("click", () => {
+    Gameboard.resetBoard();
+    renderBoard();
+
+    gameScreen.style.display = "none";
+    startScreen.style.display = "block";
+
+    gameOver = false;
+  });
+
+  function freezeCells() {
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((cell) => {
+      cell.removeEventListener("click", handleCellClick); // מסירה את האזנה לאירועי "click"
+    });
+  }
+  return { startGame, freezeCells, renderBoard };
+})();

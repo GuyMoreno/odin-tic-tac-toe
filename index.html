@@ -7,17 +7,42 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <h1>Tic-Tac-Toe Game</h1>
-    <div id="game-board"></div>
-    <button id="startGameBtn">Start Game</button>
-    <div class="text-container">
-      <div id="name-inputs" style="display: none">
-        <label>Player 1 Name: <input type="text" id="player1-name" /></label>
-        <label>Player 2 Name: <input type="text" id="player2-name" /></label>
-        <button id="submit-names">Submit Names</button>
+    <!-- header section -->
+    <header>
+      <h1>Welcome to Tic-Tac-Toe Game</h1>
+    </header>
+
+    <!-- start section -->
+    <section id="start-screen">
+      <p>Please enter your names</p>
+      <div>
+        <label for="player1-name">Player 1:</label>
+        <input type="text" id="player1-name" placeholder="Player 1's name" />
       </div>
-      <div id="resultDisplay">Result:</div>
-    </div>
+      <div>
+        <label for="player2-name">Player 2:</label>
+        <input type="text" id="player2-name" placeholder="Player 2's name" />
+      </div>
+      <button id="start-button">Start Game</button>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <!-- display: none will hide this part -->
+    <section id="game-screen" style="display: none">
+      <div id="game-board">
+        <div class="cell" id="0"></div>
+        <div class="cell" id="1"></div>
+        <div class="cell" id="2"></div>
+        <div class="cell" id="3"></div>
+        <div class="cell" id="4"></div>
+        <div class="cell" id="5"></div>
+        <div class="cell" id="6"></div>
+        <div class="cell" id="7"></div>
+        <div class="cell" id="8"></div>
+      </div>
+      <div id="current-player"></div>
+      <button id="reset-button">Restart Game</button>
+    </section>
 
     <script src="script.js"></script>
   </body>
