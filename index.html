@@ -9,26 +9,12 @@
   <body>
     <!-- header section -->
     <header>
-      <h1>Welcome to Tic-Tac-Toe Game</h1>
+      <h1>Tic Tac Toe</h1>
     </header>
 
-    <!-- start section -->
-    <section id="start-screen">
-      <p>Please enter your names</p>
-      <div>
-        <label for="player1-name">Player 1:</label>
-        <input type="text" id="player1-name" placeholder="Player 1's name" />
-      </div>
-      <div>
-        <label for="player2-name">Player 2:</label>
-        <input type="text" id="player2-name" placeholder="Player 2's name" />
-      </div>
-      <button id="start-button">Start Game</button>
-    </section>
-
-    <!-- GAME SCREEN -->
-    <!-- display: none will hide this part -->
-    <section id="game-screen" style="display: none">
+    <!-- Main -->
+    <main>
+      <p id="turn-indicator">Turn</p>
       <div id="game-board">
         <div class="cell" id="0"></div>
         <div class="cell" id="1"></div>
@@ -40,10 +26,37 @@
         <div class="cell" id="7"></div>
         <div class="cell" id="8"></div>
       </div>
-      <div id="current-player"></div>
-      <button id="reset-button">Restart Game</button>
-    </section>
+      <button id="restart-button">Restart Game</button>
+    </main>
 
+    <dialog class="dialog" id="start-screen">
+      <form method="dialog">
+        <p>Let's Start!</p>
+        <div class="playerName">
+          <label for="player1-name">Player 1's name:</label>
+          <input
+            type="text"
+            name="name1"
+            id="player1-name"
+            maxlength="12"
+            required
+          />
+        </div>
+        <p>
+          <label for="player2-name">Player 2's name:</label>
+          <input
+            type="text"
+            name="name2"
+            id="player2-name"
+            maxlength="12"
+            required
+          />
+        </p>
+        <button autofocus id="confirm-button">Confirm</button>
+      </form>
+    </dialog>
+
+    <!-- <button id="start-button">Start Game</button> -->
     <script src="script.js"></script>
   </body>
 </html>

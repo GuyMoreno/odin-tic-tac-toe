@@ -31,7 +31,6 @@ const GameController = (() => {
   let player1 = null;
   let player2 = null;
   let currentPlayer = null;
-  let gameOver = false; // <-- Move gameOver here
 
   const winningCombinations = [
     [0, 1, 2],
@@ -50,17 +49,20 @@ const GameController = (() => {
     currentPlayer = player1;
     Gameboard.resetBoard();
     displayController.updateTurnIndicator(currentPlayer);
+    console.log(`${currentPlayer.name} starts the game!`);
   };
 
   const getCurrentPlayer = () => currentPlayer;
 
   const switchTurn = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
+    console.log(`${currentPlayer.name}'s turn!`);
     displayController.updateTurnIndicator(currentPlayer);
   };
 
   const placeMarker = (index) => {
     if (Gameboard.placeMarker(index, currentPlayer.marker)) {
+      console.log(`${currentPlayer.name} placed a marker at ${index}`);
       //Every move check for a winner
       if (checkWinner()) {
         return;
@@ -73,29 +75,26 @@ const GameController = (() => {
   const checkDraw = () => {
     const board = Gameboard.getBoard();
     if (!board.includes("")) {
-      // If there are no empty spaces left, it's a draw
-      alert("It's a draw!");
-      GameController.gameOver = true;
+      console.log("It's a draw!");
       return true;
     }
-    return false; // No draw yet, continue the game
+    return false;
   };
 
   const checkWinner = () => {
     const board = Gameboard.getBoard();
+    for (let combination of winningCombinations) {
+      const [a, b, c] = combination;
 
-    // Loop through each winning combination
-    for (let [a, b, c] of winningCombinations) {
-      // If all three positions in the combination match and are not empty
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        GameController.gameOver = true; // Game over if a winner is found
-        console.log(`${GameController.getCurrentPlayer().name} wins!`);
-        return true; // Winner found, exit early
+        // alert(`${currentPlayer.name} wins!`);
+        gameOver = true;
+        return true;
       }
     }
-    // If no winner, check for a draw
     checkDraw();
-    return false; // No winner found
+
+    return false;
   };
 
   return {
@@ -114,6 +113,7 @@ const displayController = (() => {
   const restartButton = document.getElementById("restart-button");
   const dialog = document.querySelector(".dialog");
   const confirmButton = document.getElementById("confirm-button");
+  let gameOver = false;
 
   function startGame() {
     const player1Name = document.getElementById("player1-name").value;
@@ -143,37 +143,29 @@ const displayController = (() => {
 
     cells.forEach((cell, index) => {
       cell.textContent = board[index];
-      cell.removeEventListener("click", handleCellClick); // Clean up old listeners
-
-      if (!GameController.gameOver) {
-        cell.addEventListener("click", handleCellClick); // Attach handleCellClick directly
+      cell.removeEventListener("click", handleCellClick);
+      if (!gameOver) {
+        cell.addEventListener("click", () => handleCellClick(index));
       }
     });
   }
 
-  function handleCellClick(event) {
-    const index = event.target.id; // Get index from the clicked cell's ID
+  function handleCellClick(index) {
+    if (gameOver) return;
 
-    if (GameController.gameOver) return;
-
-    GameController.placeMarker(index); // Place marker
+    GameController.placeMarker(index);
     if (GameController.checkWinner()) {
-      GameController.gameOver = true;
+      gameOver = true; // Set gameOver to true if there's a winner
       alert(`${GameController.getCurrentPlayer().name} wins!`);
     }
-    renderBoard(); // Re-render the board
+    renderBoard();
   }
 
   restartButton.addEventListener("click", () => {
     Gameboard.resetBoard();
-    GameController.gameOver = false;
-
-    const cells = document.querySelectorAll(".cell");
-    cells.forEach((cell) => {
-      cell.removeEventListener("click", handleCellClick); // Remove old listeners
-    });
-
-    renderBoard();
+    gameOver = false; // Reset gameOver to false when restarting the game
+    renderBoard(); // Re-render the board when restarting the game
   });
+
   return { startGame, renderBoard, handleCellClick, updateTurnIndicator };
 })();
